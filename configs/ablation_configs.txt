@@ -1,0 +1,19 @@
+# The 14 photorealistic-simulation ablation configurations (synthetic training sets).
+# Each is a rendering variant; ALL share identical YOLO augmentation + the same
+# sim-to-real albumentations pipeline + identical optimizer/epochs (see README).
+# Format:  dataset_name   ->   table label
+# Exact rendering semantics of each factor are described in the paper.
+baseline   -> Baseline    # full pipeline (HDRI + direct sun / hard shadows)
+sun_off    -> Sun-Off     # HDRI only, no direct-sun hard shadows
+h_off      -> H-Off       # HDRI disabled
+s_off      -> S-Off       # shadows off
+v_low      -> V-Low
+v_mid      -> V-Mid
+i_1        -> I-1
+t_10       -> T-10
+t_5        -> T-5
+inv_off    -> Inv-Off
+pen_off    -> Pen-Off
+n_0        -> N-0
+n_30       -> N-30
+yaw_off    -> Yaw-Off

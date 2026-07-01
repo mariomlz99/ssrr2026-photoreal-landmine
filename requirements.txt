@@ -1,0 +1,9 @@
+# Core deps (versions used in the paper experiments).
+# PyTorch: install the build matching your CUDA from https://pytorch.org first, e.g.
+#   pip install torch --index-url https://download.pytorch.org/whl/cu128
+# torch==2.11.0+cu128   (CUDA 12.8, RTX 5090)
+ultralytics==8.4.53
+numpy==2.4.4
+opencv-python==4.13.0
+albumentations==2.0.8
+matplotlib==3.10.9

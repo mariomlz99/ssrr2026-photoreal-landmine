@@ -1,0 +1,33 @@
+{
+  "run_timestamp": "20260628_105747",
+  "iou_threshold": 0.001,
+  "model_size": "yolo11l",
+  "data_size": "20k",
+  "conf_thresholds": [
+    0.25,
+    0.5,
+    0.75
+  ],
+  "idd_split": "ITA.yolo/test",
+  "odd_split": "USA.yolo/val",
+  "idd_images": 3743,
+  "odd_images": 4436,
+  "configs_evaluated": [
+    "baseline",
+    "sun_off"
+  ],
+  "configs_missing": [
+    "v_low",
+    "v_mid",
+    "h_off",
+    "s_off",
+    "i_1",
+    "t_10",
+    "t_5",
+    "n_0",
+    "n_30",
+    "inv_off",
+    "yaw_off",
+    "pen_off"
+  ]
+}

@@ -1,0 +1,19 @@
+# weights & datasets are large -> not tracked (see README for how to obtain/place them)
+runs/
+*.pt
+data/
+datasets/
+SULAND/
+# python
+__pycache__/
+*.pyc
+.venv/
+venv/
+# os
+.DS_Store
+
+# local path config (use configs/env.example.sh as template)
+configs/env.sh
+
+# run logs (nohup output) -- not part of the release
+logs/
