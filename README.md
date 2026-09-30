@@ -3,7 +3,7 @@
 <p align="center">
   <a href="https://rma.ac.be/en"><img src="assets/rma_logo.png" alt="Royal Military Academy" height="58"></a>&nbsp;&nbsp;&nbsp;
   <a href="https://www.kuleuven.be/english/"><img src="assets/ku_leuven_logo.png" alt="KU Leuven" height="58"></a>&nbsp;&nbsp;&nbsp;
-  <a href="https://www.ssrr-ieee.org/"><img src="assets/ssrr_logo.webp" alt="IEEE SSRR 2026" height="58"></a>
+  <a href="https://www.ssrr-ieee.org/"><img src="assets/ssrr_logo.png" alt="IEEE SSRR 2026, Incheon" height="58"></a>
 </p>
 
 <p align="center">
