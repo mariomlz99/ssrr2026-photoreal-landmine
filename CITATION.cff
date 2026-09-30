@@ -1,0 +1,34 @@
+cff-version: 1.2.0
+message: "If you use this software or its released results, please cite the accompanying SSRR 2026 paper."
+title: "Towards Replacing Real Images with Synthetic Data for Surface Landmine Detection"
+type: software
+authors:
+  - family-names: Malizia
+    given-names: Mario
+  - family-names: Tsiogkas
+    given-names: Nikolaos
+  - family-names: Demeester
+    given-names: Eric
+  - family-names: Haelterman
+    given-names: Rob
+  - family-names: Hasselmann
+    given-names: Ken
+repository-code: "https://github.com/mariomlz99/ssrr2026-photoreal-landmine"
+license: MIT
+preferred-citation:
+  type: conference-paper
+  title: "Towards Replacing Real Images with Synthetic Data for Surface Landmine Detection"
+  authors:
+    - family-names: Malizia
+      given-names: Mario
+    - family-names: Tsiogkas
+      given-names: Nikolaos
+    - family-names: Demeester
+      given-names: Eric
+    - family-names: Haelterman
+      given-names: Rob
+    - family-names: Hasselmann
+      given-names: Ken
+  conference:
+    name: "2026 IEEE International Symposium on Safety, Security, and Rescue Robotics (SSRR)"
+  year: 2026

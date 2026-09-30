@@ -1,148 +1,124 @@
-# Towards Replacing Real Images with Synthetic Data for Surface Landmine Detection
+# [SSRR'26] Towards Replacing Real Images with Synthetic Data for Surface Landmine Detection
 
-Code to reproduce the results of the paper: training the **real** and **14 synthetic**
-YOLOv11 detectors, evaluating them on the SULAND benchmark, and regenerating the result tables/figures.
+<p align="center">
+  <a href="https://rma.ac.be/en"><img src="assets/rma_logo.png" alt="Royal Military Academy" height="58"></a>&nbsp;&nbsp;&nbsp;
+  <a href="https://www.kuleuven.be/english/"><img src="assets/ku_leuven_logo.png" alt="KU Leuven" height="58"></a>
+</p>
 
-- **IDD** (in-distribution) = ITA, evaluated on the held-out **test** split.
-- **ODD** (out-of-distribution, zero-shot) = USA, evaluated on its **val** split.
-- Detector: Ultralytics **YOLOv11** (l / s / n). Classes: `pfm1` (PFM-1), `starfish` (PMA-2).
+<p align="center">
+  <a href="https://www.ssrr-ieee.org/"><strong>IEEE SSRR 2026 · Incheon, Korea · 2–4 November 2026</strong></a>
+</p>
 
-> IDD numbers are reported on the held-out ITA/**test** split (never seen during training or
-> validation). Synthetic models train on terrains gscatter_1-18 and validate on gscatter_19-20.
+<p align="center">
+  <img src="assets/simulator_preview.gif" alt="Blender simulator preview with PFM-1 and PMA-2 landmines" width="720">
+</p>
 
----
+Code, released results, and download instructions for our Blender-based synthetic-data study of optical PFM-1 and PMA-2 detection. Models train on either real SULAND data or synthetic imagery and are evaluated on real **IID** (ITA test) and **OOD** (USA) splits.
 
-## Repository layout
-```
-training/    train_ablation.py        synthetic (14 configs x {n,s,l} x {10k,20k,30k}) + sim-to-real albumentations
-             train_real_baseline.py   real YOLOv11l
-             train_real_sizes.py       real YOLOv11 n/s
-evaluation/  eval_ablation_suland.py        synthetic -> summary.csv (IDD test + ODD val, conf .25/.50/.75)
-             eval_real_ablation_suland.py   real      -> real_summary[_s|_n].csv
-             eval_iou_sweep_conf_0.25_0.5_0.75.py / eval_iou_sensitivity.py   IoU sweep (Results 2)
-analysis/    make_results1..4_log.py   build the result .txt tables + figures from the eval CSVs
-             make_variance_table.py    aggregate the 5-seed runs -> mean +- std
-eval_results/  shipped eval CSVs (so the tables/figures regenerate without re-training)
-results/       the produced RESULTS_*.txt + figs/   (reference outputs)
-configs/       env.example.sh, ablation_configs.txt
-reproduce_all.sh / variance_study.sh / eval_variance.sh   one-shot pipelines
-DATA.md        how to obtain and place the datasets
-```
+## Paper highlights
 
-## Results produced
-| # | What | Builder | Output |
-|---|------|---------|--------|
-| 1 | YOLOv11l: real vs 14 synthetic, IDD/ODD, conf .25/.50/.75 | `analysis/make_results1_log.py` | `results/RESULTS_1_yolov11l_30k.txt` |
-| 2 | IoU-sweep consistency (L models) | `analysis/make_results2_log.py` | `results/RESULTS_2_iou_sweep_yolov11l.txt` + figs |
-| 3 | Detector-scale (deployability) n/s/l, conf .25/.50/.75 | `analysis/make_results3_log.py` | `results/RESULTS_3_deployability.txt` + figs |
-| 4 | Data-scaling 10k/20k/30k (incl. nano inversion) | `analysis/make_results4_log.py` | `results/RESULTS_4_datascaling.txt` + figs |
-| 5 | Seed robustness (5 seeds, headline configs) | `analysis/make_variance_table.py` | `eval_results/variance/variance_table.csv` |
+All headline values below are from the current camera-ready manuscript (YOLO11l, 30k synthetic images unless noted).
 
----
+| Result | Real training | Synthetic training |
+|---|---:|---:|
+| OOD macro-F1, confidence 0.25 | 0.348 | **0.751** (T-10) |
+| OOD AP50 | 0.322 | **0.555** (T-10) |
+| OOD mAP50–95 | 0.181 | **0.259** (T-10) |
+| Five-seed OOD macro-F1 | 0.373 ± 0.026 | **0.738 ± 0.011** (Sun-Off) |
 
-## Setup
+Every synthetic configuration exceeds the real baseline on OOD under macro-F1, AP50, and mAP50–95. On IID, the real baseline remains strongest under standard AP. A 2.6 M-parameter synthetic YOLO11n also exceeds the 25.3 M-parameter real-trained YOLO11l on OOD (0.613 vs. 0.348 macro-F1 at confidence 0.25).
+
+<p align="center">
+  <img src="assets/synthetic_rgb_masks_labels.png" alt="Synthetic RGB image, instance masks, and detector labels" width="49%">
+  <img src="assets/ood_detection_example.jpg" alt="Real OOD PMA-2 image and synthetic-trained detector prediction" width="49%">
+</p>
+
+## Reproduce in seconds (no GPU)
+
+The evaluation CSVs are included. Regenerate the four paper result summaries and figures:
+
 ```bash
-python -m venv venv && source venv/bin/activate
-# install the torch build matching your CUDA first (see requirements.txt), then:
+git clone https://github.com/mariomlz99/ssrr2026-photoreal-landmine.git
+cd ssrr2026-photoreal-landmine
+python -m venv .venv
+source .venv/bin/activate
 pip install -r requirements.txt
+for script in analysis/make_results{1,2,3,4}_log.py; do python "$script"; done
 ```
 
-## Configure paths
-Train/eval scripts read three environment variables (defaults point to the authors' machine).
-Copy and edit:
+Outputs appear in `results/`. The compact standard-AP results used in the paper are in [`eval_results/standard_ap/yolo11l_30k/summary.csv`](eval_results/standard_ap/yolo11l_30k/summary.csv).
+
+## Full reproduction (GPU)
+
+1. Follow [`DATA.md`](DATA.md) to place the synthetic datasets, SULAND, and optionally the released checkpoints.
+2. Copy and edit the path template: `cp configs/env.example.sh configs/env.sh && source configs/env.sh`.
+3. Run `bash reproduce_all.sh` for training → evaluation → analysis, or use the focused commands below.
+
 ```bash
-cp configs/env.example.sh configs/env.sh   # edit the 3 paths
-source configs/env.sh
-```
-- `SSRR_DATA`: real dataset root, `iid/ITA.yolo/{train,val,test}` and `ood/USA.yolo/val`
-- `SSRR_DATASETS`: synthetic datasets root, `{config}_{10k,20k,30k}/{train,val}/{images,labels}`
-- `SSRR_RUNS_BASE`: holds `runs/detect/{synthetic_ablation,real_ablation}/<run>/weights/best.pt`
-
----
-
-## Reproduce
-
-### A. Tables & figures only (no GPU, ~seconds)
-The eval CSVs are shipped, so the result tables/figures regenerate directly:
-```bash
-python analysis/make_results1_log.py
-python analysis/make_results2_log.py
-python analysis/make_results3_log.py
-python analysis/make_results4_log.py
-# -> results/RESULTS_*.txt and results/figs/*.pdf
-```
-
-### B. Full pipeline (train -> eval -> analysis, GPU)
-**1) Train.**
-```bash
-# real
-python training/train_real_baseline.py            # YOLOv11l
-python training/train_real_sizes.py --models n s   # YOLOv11 n, s
-# synthetic (14 configs). L/30k for Results 1-2:
+# Main 14-configuration ablation
 python training/train_ablation.py --models l --sizes 30k
-# all sizes & data sizes for Results 3-4:
+python evaluation/eval_ablation_suland.py --size l --datasize 30k \
+  --outdir eval_results/ablation_suland/yolo11l_30k
+
+# Standard AP50 and mAP50–95 (released checkpoints required)
+python evaluation/eval_standard_ap.py
+
+# Five-seed robustness
+bash variance_study.sh all
+bash eval_variance.sh
+```
+
+All runs use 640×640 inputs, AdamW, 100 epochs, batch 32, seed 42, and the paper's fixed augmentation settings. Synthetic training additionally uses the documented appearance-adaptation pipeline. Standard AP evaluation remaps the reversed USA class IDs before invoking the Ultralytics validator.
+
+<details>
+<summary><strong>Repository map and advanced experiments</strong></summary>
+
+| Path | Purpose |
+|---|---|
+| `training/` | real and synthetic YOLO11 training |
+| `evaluation/` | fixed-confidence, IoU-sweep, and standard-AP evaluation |
+| `analysis/` | table and figure builders |
+| `eval_results/` | machine-readable released measurements |
+| `results/` | generated paper summaries and plots |
+| `configs/` | environment template and ablation definitions |
+
+Detector-scale and data-volume experiments:
+
+```bash
+python training/train_real_sizes.py --models n s
 python training/train_ablation.py --models n s l --sizes 10k 20k 30k
 ```
-**2) Evaluate** into the fixed layout the analysis reads (`eval_results/ablation_suland/yolo11<size>_<datasize>/`):
-```bash
-D=eval_results/ablation_suland
-for sz in l s n; do for ds in 30k 20k 10k; do
-  python evaluation/eval_ablation_suland.py --size $sz --datasize $ds --outdir $D/yolo11${sz}_${ds}
-done; done
-# real (no data-size axis) -> writes real_summary[_s|_n].csv into the 30k dirs
-for sz in l s n; do
-  python evaluation/eval_real_ablation_suland.py --size $sz --outdir $D/yolo11${sz}_30k
-done
-# IoU sweep for Results 2 (L, 30k)
-python evaluation/eval_iou_sweep_conf_0.25_0.5_0.75.py --size l --datasize 30k \
-       --outdir eval_results/iou_conf_sweep/yolo11l_30k
+
+The seed-42 tables use single runs. The uncertainty study repeats the real baseline and six informative synthetic configurations with seeds 42–46.
+
+</details>
+
+## Data and weights
+
+- Synthetic datasets: 20 sets, approximately 439 GB ([download](https://ssrr-submission.s.gy/UFnfsN), SHA-256 `b5ecd78f4f4c161d65bbd478016842420820450ab38800cd0d97621522c849f8`).
+- SULAND: obtain the benchmark from its original source; it is not redistributed here.
+- Trained checkpoints: optional downloads and checksums are listed in [`DATA.md`](DATA.md).
+
+Large datasets and checkpoints are intentionally kept out of Git. The repository contains only code, compact metrics, figures, and README media.
+
+## Citation
+
+Publication metadata is not final yet; please use the provisional citation below and check back for the DOI and page numbers.
+
+```bibtex
+@inproceedings{malizia2026replacing,
+  title     = {Towards Replacing Real Images with Synthetic Data for Surface Landmine Detection},
+  author    = {Malizia, Mario and Tsiogkas, Nikolaos and Demeester, Eric and Haelterman, Rob and Hasselmann, Ken},
+  booktitle = {2026 IEEE International Symposium on Safety, Security, and Rescue Robotics (SSRR)},
+  year      = {2026},
+  note      = {Forthcoming}
+}
 ```
-**3) Analysis.** Run the four `analysis/make_results*_log.py` as in step A.
 
-Instead of running steps 1–3 by hand, you can run the whole train → eval → analysis pipeline
-end-to-end with a single script: `bash reproduce_all.sh`. It executes all the commands above in
-order and skips any step whose outputs already exist, so it is safe to re-run after an interruption.
+## Acknowledgments
 
-### C. Seed robustness (5 seeds)
-The headline configurations are re-run over five seeds to attach uncertainty:
-```bash
-bash variance_study.sh all     # train: seed 42 (full paper) then seeds 43-46 (headline configs)
-bash eval_variance.sh          # eval + aggregate -> eval_results/variance/variance_table.csv
-```
-Any script honours `SSRR_RUN_SEED` (default 42) to set the run seed.
-
----
-
-## Method notes (for fair comparison)
-- **Identical training protocol** for real and synthetic: AdamW, lr0 3e-4, lrf 0.01, cos_lr,
-  weight_decay 5e-4, 100 epochs, patience 25, batch 32, imgsz 640, seed 42, and the **same**
-  built-in YOLO augmentations (hsv/translate/scale/fliplr/mosaic/erasing/randaugment).
-- **Synthetic-only sim-to-real augmentation:** synthetic training additionally applies a
-  photometric albumentations pipeline (sensor noise, blur, brightness/contrast/hue jitter, JPEG
-  compression) to bridge the domain gap; it is part of the synthetic recipe, identical across
-  all 14 configs, and is **not** applied to the real baseline (redundant for real imagery).
-- **Seeded end-to-end** via `SSRR_RUN_SEED` (default 42): the run seed drives weight init,
-  augmentation, and the sim-to-real recipe, so a fixed seed reproduces a run exactly. The
-  headline tables use seed 42; the seed-robustness analysis repeats them over seeds 42-46.
-
-## Data
-The SULAND real splits and the rendered synthetic datasets / trained weights are not included
-(size). Place them at the paths above (or set the env vars) and the pipeline runs end-to-end.
-See **[`DATA.md`](DATA.md)** for the exact folder layout, expected structure, and a sanity check.
-
-**Synthetic datasets** (the 20 sets used in the paper, ≈439 GB, `suland_synthetic_datasets.tar`):
-<https://ssrr-submission.s.gy/UFnfsN>
-`sha256: b5ecd78f4f4c161d65bbd478016842420820450ab38800cd0d97621522c849f8`
-Extract at the repo root: `tar -xf suland_synthetic_datasets.tar -C .` → `./datasets/`.
-
-**SULAND real benchmark**: obtained from its original source and placed at `./SULAND/` (see `DATA.md`).
-
-**Trained weights** (optional): the 71 checkpoints are released so the tables reproduce by
-evaluation alone, no training. Two archives (seed-42, ~1.3 GB; seeds 43-46, ~1.4 GB). Extract
-into the repo (`runs/detect/.../weights/best.pt`) and evaluate. Links + checksums in `DATA.md`.
-
-## Acknowledgements
-This repository is anonymised for the initial submission.
+This work was supported by the Belgian Defence under Grant DAP 23/08. We thank the Graswald Team for granting permission to use Gscatter and their free assets for this research and its dissemination.
 
 ## License
-MIT (see `LICENSE`).
+
+Code is released under the [MIT License](LICENSE). External datasets, models, logos, and third-party assets remain subject to their respective terms.

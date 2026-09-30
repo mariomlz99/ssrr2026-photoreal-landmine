@@ -62,15 +62,15 @@ SULAND/
 ├── iid/ITA.yolo/
 │   ├── train/  images/  labels/        # 22,756 imgs, real model trains here
 │   ├── val/    images/  labels/        #  2,836 imgs, validation split
-│   ├── test/   images/  labels/        #  3,743 imgs, IDD evaluation (held-out)
+│   ├── test/   images/  labels/        #  3,743 imgs, IID evaluation (held-out)
 │   └── ITA_train_val_2.yaml            # data.yaml for real-model training
 └── ood/USA.yolo/
-    └── val/    images/  labels/        #  4,436 imgs, ODD evaluation
+    └── val/    images/  labels/        #  4,436 imgs, OOD evaluation
 ```
 
 - Images may be nested by video sequence (`.../images/<seq>/<frame>.jpg`); the loaders handle this.
-- **IDD = `ITA.yolo/test`** (the held-out split, not val).
-- **ODD = `USA.yolo/val`** (the only USA split = the out-of-distribution test set).
+- **IID = `ITA.yolo/test`** (the held-out split, not val).
+- **OOD = `USA.yolo/val`** (the only USA split = the out-of-distribution test set).
 - USA labels define `0=starfish, 1=butterfly` (opposite of synthetic); the eval applies a class remap automatically.
 
 ---
