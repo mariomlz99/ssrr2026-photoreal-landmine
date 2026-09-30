@@ -2,11 +2,8 @@
 
 <p align="center">
   <a href="https://rma.ac.be/en"><img src="assets/rma_logo.png" alt="Royal Military Academy" height="58"></a>&nbsp;&nbsp;&nbsp;
-  <a href="https://www.kuleuven.be/english/"><img src="assets/ku_leuven_logo.png" alt="KU Leuven" height="58"></a>
-</p>
-
-<p align="center">
-  <a href="https://www.ssrr-ieee.org/"><strong>IEEE SSRR 2026 · Incheon, Korea · 2–4 November 2026</strong></a>
+  <a href="https://www.kuleuven.be/english/"><img src="assets/ku_leuven_logo.png" alt="KU Leuven" height="58"></a>&nbsp;&nbsp;&nbsp;
+  <a href="https://www.ssrr-ieee.org/"><img src="assets/ssrr_logo.webp" alt="IEEE SSRR 2026" height="58"></a>
 </p>
 
 <p align="center">
@@ -30,7 +27,7 @@ Every synthetic configuration exceeds the real baseline on OOD under macro-F1, A
 
 <p align="center">
   <img src="assets/synthetic_rgb_masks_labels.png" alt="Synthetic RGB image, instance masks, and detector labels" width="49%">
-  <img src="assets/ood_detection_example.jpg" alt="Real OOD PMA-2 image and synthetic-trained detector prediction" width="49%">
+  <img src="assets/ood_detection_example.png" alt="Real OOD PMA-2 image and synthetic-trained detector prediction" width="49%">
 </p>
 
 ## Reproduce in seconds (no GPU)
