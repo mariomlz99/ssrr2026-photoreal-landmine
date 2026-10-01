@@ -14,7 +14,7 @@ Code, released results, and download instructions for our Blender-based syntheti
 
 ## Paper highlights
 
-All headline values below are from the current camera-ready manuscript (YOLO11l, 30k synthetic images unless noted).
+All headline values below are from the current camera-ready manuscript (YOLO11l, 30k synthetic images unless noted). The real-training column uses the original real baseline without the additional appearance-adaptation stage; matched controls are reported immediately below.
 
 | Result | Real training | Synthetic training |
 |---|---:|---:|
@@ -28,6 +28,17 @@ Every synthetic configuration exceeds the real baseline on OOD under macro-F1, A
 ### Additional control: appearance adaptation
 
 A control retraining of the synthetic Baseline-30k YOLO11l with the synthetic-only appearance-adaptation stage disabled yielded an OOD macro-F1 of **0.465** at confidence 0.25 and AP50/mAP50–95 of **0.312/0.144**. The full synthetic pipeline obtains **0.727** and **0.545/0.244**, while the real-data YOLO11l obtains **0.348** and **0.322/0.181**. The control therefore shows that appearance adaptation materially contributes to sim-to-real transfer: without it, the synthetic model retains a fixed-threshold mF1 advantage, but not the standard-AP advantage. Compact metrics and curves are available under [`supplementary/appearance_adaptation_control/`](supplementary/appearance_adaptation_control/).
+
+### Matched appearance-adaptation controls
+
+| Training regime | mF1 @ 0.25 | AP50 | mAP50–95 |
+|---|---:|---:|---:|
+| Real baseline | 0.348 | 0.322 | 0.181 |
+| Real + appearance adaptation | 0.601 | 0.477 | **0.275** |
+| Synthetic Baseline-30k without adaptation | 0.465 | 0.312 | 0.144 |
+| Synthetic Baseline-30k + adaptation | **0.727** | **0.545** | 0.244 |
+
+To separate synthetic-data effects from the generic robustness provided by the appearance-adaptation stage, we additionally evaluated matched controls. Applying the same stage to real-data training substantially improves OOD robustness. Under matched adaptation, the synthetic Baseline-30k remains higher in OOD macro-F1 (0.727 vs. 0.601) and AP50 (0.545 vs. 0.477), while the adapted real model is higher in mAP50–95 (0.275 vs. 0.244). See [`supplementary/real_appearance_adaptation_control/`](supplementary/real_appearance_adaptation_control/) for metrics, curves, and reproduction material.
 
 <p align="center">
   <img src="assets/synthetic_rgb_masks_labels.png" alt="Synthetic RGB image, instance masks, and detector labels" width="49%">

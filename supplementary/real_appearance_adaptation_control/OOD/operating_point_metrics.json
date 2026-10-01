@@ -1,0 +1,58 @@
+{
+  "class_names": [
+    "pfm1",
+    "starfish"
+  ],
+  "confidence": 0.25,
+  "confusion_matrix": [
+    [
+      794.0,
+      8.0,
+      1598.0
+    ],
+    [
+      136.0,
+      835.0,
+      416.0
+    ],
+    [
+      88.0,
+      35.0,
+      0.0
+    ]
+  ],
+  "domain": "OOD",
+  "iou_threshold": 0.001,
+  "metrics": {
+    "classes": {
+      "pfm1": {
+        "f1": 0.464599,
+        "fn": 1606,
+        "fp": 224,
+        "precision": 0.779961,
+        "recall": 0.330833,
+        "support": 2400,
+        "tp": 794
+      },
+      "starfish": {
+        "f1": 0.737307,
+        "fn": 552,
+        "fp": 43,
+        "precision": 0.951025,
+        "recall": 0.602019,
+        "support": 1387,
+        "tp": 835
+      }
+    },
+    "macro_f1": 0.600953,
+    "macro_precision": 0.865493,
+    "macro_recall": 0.466426,
+    "total_gt": 3787,
+    "weighted_f1": 0.564479
+  },
+  "ood_ground_truth_class_remap": {
+    "0": 1,
+    "1": 0
+  },
+  "weights": "external real-appearance-adaptation-control best.pt"
+}

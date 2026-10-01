@@ -1,0 +1,5 @@
+model,training_source,appearance_adaptation,OOD_macro_F1_conf_0.25,OOD_AP50,OOD_mAP50_95
+Real baseline,real,off,0.348,0.322,0.181
+Real + appearance adaptation,real,on,0.600953,0.4768421710,0.2748579843
+Synthetic Baseline-30k without appearance adaptation,synthetic,off,0.465096,0.3123806502,0.1439375290
+Synthetic Baseline-30k + appearance adaptation,synthetic,on,0.727,0.545,0.244

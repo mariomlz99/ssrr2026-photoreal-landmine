@@ -1,0 +1,2 @@
+source configs/env.sh
+$SSRR_PY supplementary/real_appearance_adaptation_control/scripts/train_control.py --device 0 --workers 4 --cache ram
