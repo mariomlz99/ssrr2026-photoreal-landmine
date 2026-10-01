@@ -23,7 +23,7 @@ All headline values below are from the current camera-ready manuscript (YOLO11l,
 | OOD mAP50–95 | 0.181 | **0.259** (T-10) |
 | Five-seed OOD macro-F1 | 0.373 ± 0.026 | **0.738 ± 0.011** (Sun-Off) |
 
-Every synthetic configuration exceeds the real baseline on OOD under macro-F1, AP50, and mAP50–95. On IID, the real baseline remains strongest under standard AP. A 2.6 M-parameter synthetic YOLO11n also exceeds the 25.3 M-parameter real-trained YOLO11l on OOD (0.613 vs. 0.348 macro-F1 at confidence 0.25).
+Every synthetic configuration exceeds the original real baseline on OOD under macro-F1, AP50, and mAP50–95. On IID, the real baseline remains strongest under standard AP. A 2.6 M-parameter synthetic YOLO11n also exceeds the 25.3 M-parameter real-trained YOLO11l on OOD (0.613 vs. 0.348 macro-F1 at confidence 0.25).
 
 ### Additional control: appearance adaptation
 

@@ -1,6 +1,6 @@
 # Appearance-adaptation control
 
-The camera-ready paper treats the synthetic-only appearance-adaptation stage as part of the sim-to-real pipeline. To isolate its contribution, we retrained the Baseline-30k YOLO11l (seed 42) with this additional stage disabled while holding the standard YOLO augmentation pipeline and all other training settings fixed.
+The camera-ready paper treats the appearance-adaptation stage used in the original synthetic pipeline as part of the sim-to-real pipeline. To isolate its contribution, we retrained the Baseline-30k YOLO11l (seed 42) with this additional stage disabled while holding the standard YOLO augmentation pipeline and all other training settings fixed.
 
 | Model | OOD mF1 @ 0.25 | AP50 | mAP50–95 |
 |---|---:|---:|---:|
