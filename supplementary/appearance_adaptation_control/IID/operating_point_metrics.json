@@ -1,0 +1,55 @@
+{
+  "class_names": [
+    "pfm1",
+    "starfish"
+  ],
+  "confidence": 0.25,
+  "confusion_matrix": [
+    [
+      180.0,
+      34.0,
+      243.0
+    ],
+    [
+      9.0,
+      271.0,
+      155.0
+    ],
+    [
+      237.0,
+      632.0,
+      0.0
+    ]
+  ],
+  "domain": "IID",
+  "iou_threshold": 0.001,
+  "metrics": {
+    "classes": {
+      "pfm1": {
+        "f1": 0.407701,
+        "fn": 277,
+        "fp": 246,
+        "precision": 0.422535,
+        "recall": 0.393873,
+        "support": 457,
+        "tp": 180
+      },
+      "starfish": {
+        "f1": 0.395044,
+        "fn": 164,
+        "fp": 666,
+        "precision": 0.289221,
+        "recall": 0.622989,
+        "support": 435,
+        "tp": 271
+      }
+    },
+    "macro_f1": 0.401372,
+    "macro_precision": 0.355878,
+    "macro_recall": 0.508431,
+    "total_gt": 892,
+    "weighted_f1": 0.401528
+  },
+  "ood_ground_truth_class_remap": null,
+  "weights": "external appearance-adaptation-control best.pt"
+}

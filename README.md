@@ -25,6 +25,10 @@ All headline values below are from the current camera-ready manuscript (YOLO11l,
 
 Every synthetic configuration exceeds the real baseline on OOD under macro-F1, AP50, and mAP50–95. On IID, the real baseline remains strongest under standard AP. A 2.6 M-parameter synthetic YOLO11n also exceeds the 25.3 M-parameter real-trained YOLO11l on OOD (0.613 vs. 0.348 macro-F1 at confidence 0.25).
 
+### Additional control: appearance adaptation
+
+A control retraining of the synthetic Baseline-30k YOLO11l with the synthetic-only appearance-adaptation stage disabled yielded an OOD macro-F1 of **0.465** at confidence 0.25 and AP50/mAP50–95 of **0.312/0.144**. The full synthetic pipeline obtains **0.727** and **0.545/0.244**, while the real-data YOLO11l obtains **0.348** and **0.322/0.181**. The control therefore shows that appearance adaptation materially contributes to sim-to-real transfer: without it, the synthetic model retains a fixed-threshold mF1 advantage, but not the standard-AP advantage. Compact metrics and curves are available under [`supplementary/appearance_adaptation_control/`](supplementary/appearance_adaptation_control/).
+
 <p align="center">
   <img src="assets/synthetic_rgb_masks_labels.png" alt="Synthetic RGB image, instance masks, and detector labels" width="49%">
   <img src="assets/ood_detection_example.png" alt="Real OOD PMA-2 image and synthetic-trained detector prediction" width="49%">
@@ -78,6 +82,7 @@ All runs use 640×640 inputs, AdamW, 100 epochs, batch 32, seed 42, and the pape
 | `eval_results/` | machine-readable released measurements |
 | `results/` | generated paper summaries and plots |
 | `configs/` | environment template and ablation definitions |
+| `supplementary/` | reviewer-motivated controls and qualitative material not included in the 8-page paper |
 
 Detector-scale and data-volume experiments:
 
@@ -89,6 +94,18 @@ python training/train_ablation.py --models n s l --sizes 10k 20k 30k
 The seed-42 tables use single runs. The uncertainty study repeats the real baseline and six informative synthetic configurations with seeds 42–46.
 
 </details>
+
+## Supplementary qualitative analysis
+
+The final camera-ready paper omits the earlier HiResCAM figure for space and to keep the confidence/localization discussion appropriately cautious. The qualitative visualization is retained here as supplementary material.
+
+<p align="center">
+  <img src="supplementary/hirescam/fig5_hirescam_ood_examples.png"
+       alt="Qualitative HiResCAM comparison on two SULAND OOD examples"
+       width="900">
+</p>
+
+In the two selected OOD examples, the real-data and synthetic-trained models both concentrate attention on the target region, while only the synthetic-trained model produces a high-confidence detection. This visualization is **illustrative only** and is not presented as a calibration analysis or as evidence of a general causal mechanism. See [`supplementary/hirescam/README.md`](supplementary/hirescam/README.md) for details.
 
 ## Data and weights
 
@@ -114,7 +131,7 @@ Publication metadata is not final yet; please use the provisional citation below
 
 ## Acknowledgments
 
-This work was supported by the Belgian Defence under Grant DAP 23/08. We thank the Graswald Team for granting permission to use Gscatter and their free assets for this research and its dissemination.
+This work was supported by the Belgian Defence under Grant DAP 23/08. We thank the Graswald Team for granting permission to use [Gscatter](https://gscatter.com/) and their free assets for this research and its dissemination. OpenAI ChatGPT was used for language polishing and limited drafting assistance in parts of the manuscript; the scientific conception, methodology, analyses, interpretations, and conclusions remain the authors' own.
 
 ## License
 

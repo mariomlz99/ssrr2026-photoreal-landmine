@@ -1,0 +1,46 @@
+{
+  "AP50": 0.17994028247586807,
+  "completed_utc": "2026-10-01T10:01:20.513488+00:00",
+  "config": "baseline_30k_no_appearance_adaptation",
+  "domain": "IID",
+  "elapsed_seconds": 46.63485336303711,
+  "fitness": 0.06633605571751358,
+  "image_size": 640,
+  "mAP50_95": 0.06633605571751358,
+  "n_images": 3743,
+  "per_class": [
+    {
+      "AP50": 0.12826329505649334,
+      "class_id": 0,
+      "class_name": "pfm1",
+      "mAP50_95": 0.03849105568805378,
+      "precision": 0.4513407444801123,
+      "recall": 0.1422319474835886
+    },
+    {
+      "AP50": 0.23161726989524278,
+      "class_id": 1,
+      "class_name": "starfish",
+      "mAP50_95": 0.09418105574697334,
+      "precision": 0.4849280054803727,
+      "recall": 0.22758620689655173
+    }
+  ],
+  "precision": 0.46813437498024246,
+  "recall": 0.18490907719007016,
+  "results_dict": {
+    "fitness": 0.06633605571751358,
+    "metrics/mAP50(B)": 0.17994028247586807,
+    "metrics/mAP50-95(B)": 0.06633605571751358,
+    "metrics/precision(B)": 0.46813437498024246,
+    "metrics/recall(B)": 0.18490907719007016
+  },
+  "speed_ms_per_image": {
+    "inference": 7.302660656898354,
+    "loss": 5.440150504280404e-05,
+    "postprocess": 0.2163201902681753,
+    "preprocess": 0.2747172295187299
+  },
+  "status": "complete",
+  "weights": "external appearance-adaptation-control best.pt"
+}
